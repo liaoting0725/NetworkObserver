@@ -10,12 +10,12 @@
 #import "Reachability.h"
 
 typedef NS_ENUM(NSUInteger, NetTestStatus) {
+    NetTestStatusUnknow,
     NetTestStatusNull,
     NetTestStatusWifi,
     NetTestStatus2G,
     NetTestStatus3G,
-    NetTestStatus4G,
-    NetTestStatusUnknow
+    NetTestStatus4G
 };
 
 typedef void(^NetworkStatusChangedBlock)(NetTestStatus status);

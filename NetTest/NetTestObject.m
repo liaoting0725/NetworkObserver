@@ -26,14 +26,6 @@
     return testObject;
 }
 
-- (instancetype)init {
-    if (self = [super init]) {
-        _currentTestStatus = NetTestStatusNull;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
-    }
-    return self;
-}
-
 - (NetTestStatus)parseReachabilityObject:(Reachability *)reachObj {
     NetTestStatus testStatus;
     NSParameterAssert([reachObj isKindOfClass: [Reachability class]]);
@@ -74,8 +66,10 @@
         if (networkStatusChangedBlock) {
             _networkStatusChangeBlock = networkStatusChangedBlock;
         }
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
         _obsearverReach = [Reachability reachabilityWithHostName:@"www.baidu.com"];
         [_obsearverReach startNotifier];
+        
     }
 }
 
@@ -93,8 +87,8 @@
 - (void)dealloc {
     if (_obsearverReach) {
         [_obsearverReach stopNotifier];
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
     }
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end
